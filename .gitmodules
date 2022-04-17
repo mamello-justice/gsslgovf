@@ -7,3 +7,6 @@
 [submodule "Research Proposal"]
 	path = Research Proposal
 	url = git@github.com:mamello-justice/Goal-Selection-Strategies-for-Learning-Goal-Oriented-Value-Functions-Research-Proposal.git
+[submodule "Mind Map"]
+	path = Mind Map
+	url = git@github.com:mamello-justice/Goal-Selection-Strategies-for-Learning-Goal-Oriented-Value-Functions-Mind-Map.git
