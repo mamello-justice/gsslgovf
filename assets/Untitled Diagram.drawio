@@ -1,0 +1,131 @@
+<mxfile host="app.diagrams.net" modified="2022-04-17T09:39:59.847Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36" etag="oITdmjkZoJu6xXJ8VtlP" version="17.4.5" type="github">
+  <diagram id="gegKqHMbfT2rmoEbzS7s" name="Page-1">
+    <mxGraphModel dx="1964" dy="1105" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2336" pageHeight="1654" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-7" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-16" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;exitX=-0.002;exitY=0.766;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-40" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.495;exitY=0.999;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;exitPerimeter=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-36">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-48" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-46">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-52" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-56" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.901;exitY=1.001;exitDx=0;exitDy=0;endArrow=classic;endFill=1;strokeWidth=2;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fillColor=#f5f5f5;strokeColor=#666666;exitPerimeter=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-54">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1420" y="923" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-62" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-66" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.101;exitY=1.003;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;exitPerimeter=0;fillColor=#f5f5f5;strokeColor=#666666;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-2" target="NWF1bqreJKSRWvrPB8wl-64">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-2" value="Goal Selection Stategies&lt;br&gt;&amp;nbsp;for Learning&lt;br&gt;&amp;nbsp;Goal-Oriented&lt;br&gt;&amp;nbsp;Value Functions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="761" width="300" height="189" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-10" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-5" target="NWF1bqreJKSRWvrPB8wl-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-5" value="Geraud Nangue Tasse, Steven James,&lt;br&gt;Benjamin Rosman" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-9" value="A Boolean Task Algebra for Reinforcement Learning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="948" y="480" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-15" target="NWF1bqreJKSRWvrPB8wl-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-15" value="Fabian Benureau,&lt;br&gt;Pierre-Yves Oudeyer" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;rounded=0;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="750" y="897.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-19" value="Diversity-Driven Selection of Exploration Stategies in Multi-Armed Bandits" style="whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="530" y="890" width="160" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-30" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;endFill=1;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fillColor=#f5f5f5;strokeColor=#666666;exitX=1;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" target="NWF1bqreJKSRWvrPB8wl-31" source="NWF1bqreJKSRWvrPB8wl-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1253" y="980" as="targetPoint" />
+            <mxPoint x="1253" y="840" as="sourcePoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-31" value="Andrew G. Barto,&lt;br&gt;Richart S. Sutton" style="whiteSpace=wrap;html=1;rounded=0;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="897.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" target="NWF1bqreJKSRWvrPB8wl-34" source="NWF1bqreJKSRWvrPB8wl-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1800" y="890.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-34" value="Reinforcement Learning: An Introduction" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1610" y="890" width="150" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=classic;endFill=1;strokeWidth=2;fillColor=#ffe6cc;strokeColor=#d79b00;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-36" target="NWF1bqreJKSRWvrPB8wl-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-36" value="Florensa Carlos,&lt;br&gt;Held David,&lt;br&gt;Geng Xinyang,&lt;br&gt;Abbeel Pieter" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;rounded=0;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1108" y="1059.75" width="120" height="74.5" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-39" value="Automatic goal generation for reinforcement learning agents" style="whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1088" y="1197.75" width="160" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-45" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-46" target="NWF1bqreJKSRWvrPB8wl-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-46" value="Li Siyuan,&lt;br&gt;Zhang Chongjies" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="750" y="758.25" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-47" value="An optimal online method of selecting source policies for reinforcement learning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="530" y="753.25" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-49" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-50" target="NWF1bqreJKSRWvrPB8wl-51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-50" value="White John" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="758.25" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-51" value="Bandit algorithms for website optimization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1605" y="753.25" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-53" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-54" target="NWF1bqreJKSRWvrPB8wl-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-54" value="Shi Haobin,&lt;br&gt;Lin Zhiqiang,&lt;br&gt;Hwang Kao-Shin,&lt;br&gt;Yang Shike,&lt;br&gt;Chen Jialin" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="1050" width="120" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-55" value="An adaptive strategy selection method with reinforcement learning for robotic soccer games" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="1200.25" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-59" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-60" target="NWF1bqreJKSRWvrPB8wl-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-60" value="Pardo Fabio,&lt;br&gt;Levdik Vitaly,&lt;br&gt;Kormushev Petar" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-61" value="Q-map: A convolutional approach for goal-oriented reinforcement learning" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="480" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-63" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="NWF1bqreJKSRWvrPB8wl-64" target="NWF1bqreJKSRWvrPB8wl-65">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="880" y="1200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-64" value="Zhang Taidong,&lt;br&gt;Li Xianze,&lt;br&gt;Li Xudong,&lt;br&gt;Liu Guanghui,&lt;br&gt;Tian Miao" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="890" y="1050" width="120" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="NWF1bqreJKSRWvrPB8wl-65" value="Reinforcement Learning based Strategy Selection in StarCraft: Brood War" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="1200.25" width="160" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
