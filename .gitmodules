@@ -1,6 +1,3 @@
-[submodule "Annotated Bibliography"]
-	path = Annotated Bibliography
-	url = git@github.com:mamello-justice/Goal-Selection-Strategies-for-Learning-Goal-Oriented-Value-Functions-Annotated-Bibliography.git
 [submodule "Literature Review"]
 	path = Literature Review
 	url = git@github.com:mamello-justice/Goal-Selection-Strategies-for-Learning-Goal-Oriented-Value-Functions-Literature-Review.git

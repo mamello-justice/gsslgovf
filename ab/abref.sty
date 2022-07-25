@@ -1,0 +1,22 @@
+\ProvidesPackage{abref}
+
+\makeatletter
+\renewcommand\@biblabel[1]{}
+\renewcommand\bibname{\Large References \vspace*{-10mm}}
+\renewenvironment{thebibliography}[1]
+     {\section*{\refname}%
+      \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+      \list{}%
+           {\leftmargin\parindent
+           \itemindent-\parindent
+            \@openbib@code
+            \usecounter{enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother

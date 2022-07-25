@@ -1,0 +1,38 @@
+\documentclass[]{report}
+% Seboholi Mamello (2022)
+
+% Packages
+\usepackage[a4paper]{geometry}
+\usepackage{fullpage}
+\usepackage{charter}
+
+% Referencing
+% University of the Witwatersrand Citation Style
+\usepackage{natbib} \input{natbib-add}
+\bibliographystyle{named-wits}
+\bibpunct{[}{]}{;}{a}{}{}  % to get correct punctuation for bibliography
+\setlength{\skip\footins}{1.5cm}
+\newcommand{\citets}[1]{\citeauthor{#1}'s \citeyearpar{#1}}
+\renewcommand\bibname{\Large References \vspace*{-10mm}}
+
+% Document
+\begin{document}
+\onecolumn
+\pagenumbering{arabic}
+
+\
+\begin{center}
+    \LARGE{Annotated Bibliography}\\[10pt]
+    \LARGE Goal Selection Strategies for Learning Goal-Oriented Value Functions\\[20pt]
+    \large Prepared by Mamello Seboholi\\[10pt]
+    \large Printed on April 7, 2022\\
+\end{center}
+
+\nocite{*}
+
+\begingroup
+\let\clearpage\relax
+\bibliography{annotated-references}
+\endgroup
+
+\end{document}
