@@ -1,0 +1,246 @@
+\documentclass[a4paper,twoside,12pt]{report}
+% Seboholi Mamello (2022)
+
+% Packages
+\usepackage{fullpage}
+\usepackage{float}
+\usepackage{url}
+\usepackage{charter}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{parskip}
+\usepackage[all]{nowidow}
+\setnoclub[2]
+\setnowidow[2]
+
+\usepackage{dirtytalk}
+\usepackage{pdfpages}
+
+% Referencing
+\usepackage[]{hyperref}
+\usepackage[nameinlink]{cleveref}
+\hypersetup{
+  colorlinks = true,
+  urlcolor = blue,
+  linkcolor = blue,
+  citecolor = blue
+}
+
+% University of the Witwatersrand Citation Style
+\usepackage{natbib} \input{natbib-add}
+\bibliographystyle{named-wits}
+\bibpunct{[}{]}{;}{a}{}{}  % to get correct punctuation for bibliography
+\setlength{\skip\footins}{1.5cm}
+\newcommand{\citets}[1]{\citeauthor{#1}'s \citeyearpar{#1}}
+\renewcommand\bibname{References} 
+
+\pagestyle{headings}
+
+\renewenvironment{abstract}{\ \vfill\begin{center}\textbf{Abstract}\end{center}\addcontentsline{toc}{section}{Abstract}}{\vfill\vfill\newpage}
+\newenvironment{declaration}{\ \vfill\begin{center}\textbf{Declaration}\end{center}\addcontentsline{toc}{section}{Declaration}}{\vfill\vfill\newpage}
+\newenvironment{acknowledgements}{\ \vfill\begin{center}\textbf{Acknowledgements}\end{center}\addcontentsline{toc}{section}{Acknowledgements}}{\vfill\vfill\newpage}
+
+\pagestyle{plain}
+
+% Document
+\begin{document}
+\onecolumn
+\thispagestyle{empty}
+
+\pagenumbering{roman}
+\setcounter{page}{0}
+\addcontentsline{toc}{chapter}{Preface}
+\
+\begin{center}
+  \vfill
+  \huge \textbf{Goal Selection Strategies for Learning Goal-Oriented Value Functions}\\[5pt]
+  \LARGE \textbf{Reinforcement Learning}\\[20pt]
+  \large School of Computer Science \& Applied Mathematics\\
+  \large University of the Witwatersrand\\[20pt]
+  \large Mamello Seboholi\\
+  \large \textbf{1851317}\\[20pt]
+  \large Supervised by Dr. Steven James and Prof. Benjamin Rosman\\[10pt]
+  \today
+  \vfill
+  \includegraphics[width=5cm]{images/wits-logo.png}
+  \vfill
+  \normalsize A proposal submitted to the Faculty of Science, University of the Witwatersrand, Johannesburg, for the 
+  Introduction to Research Methods course.
+  \vfill
+\end{center}
+\newpage
+
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\phantomsection
+\begin{abstract}
+Current state of the art in reinforcement learning show impressive outcomes in high-dimensional environments, agents 
+are shown to compose new tasks by combining previously learned tasks using boolean algebra. We propose integrating 
+Thompson sampling and Upper Confidence Bounds (UCB1) to the Q-value functions as well as the extended Q-value functions, 
+to balance between exploration and exploitation.
+\end{abstract}
+
+\phantomsection
+\addcontentsline{toc}{section}{Declaration}
+\includepdf[pages=-]{declaration-form.pdf}
+
+\phantomsection
+\addcontentsline{toc}{section}{Table of Contents}
+\tableofcontents
+\newpage
+
+
+\pagenumbering{arabic}
+
+
+\chapter{Introduction}
+Reinforcement learning (RL) has as of late seen advances in complex, multi-dimensional problems 
+\citep{mnih2015human,levine2016end,lillicrap2015continuous,silver2017mastering}. However, this comes with a challenge 
+of practicality as these methods need to be trained with a vast amount of samples. One of the solutions to this problem 
+is the use of $composition$ \citep*{todorov2009compositionality} to transfer agent knowledge. This allows the agents to 
+build out skills from pre-existing skills or to speed up the training of new skills.
+
+\citet*{nangue2020boolean} built on the works of \citet*{haarnoja2018composable}, \citet*{van2019composing}, and 
+\citet*{hunt2019composing} by formalizing the union, intersection and negation of tasks. This allows for zero-shot
+composition of new tasks. The Q-value function used utilises greedy based algorithms. We are interested in bandit based 
+algorithms, particularly in Thompson sampling \citep{thompson1933likelihood} and Upper Confidence Bounds (UCB1) 
+\citep{auer2002finite}.
+
+The proposal takes the following structure. In, \Cref{ch:review}, we review the current literature. We then present the 
+problem statement, along with posing the research hypothesis, objectives as well as methods and limitations in 
+\Cref{ch:researchMethodology}. In \Cref{ch:plan}, we outline the expected timeline and lastly we summarize the 
+proposal in \Cref{ch:conclusion}.
+
+
+\chapter{Background and Related work} \label{ch:review}
+
+\section{Introduction}
+This chapter serves to present our findings in related work to this paper. The paper has the following layout: 
+\Cref{review:rl} explains the reinforcement learning problem we are focused in. 
+\Cref{review:composition} explores knowledge transfer through composition with the focus on concurrent composition.
+\Cref{review:exp} discusses the literature on the exploration-exploitation dilemma; and 
+\Cref{review:conclusion} will serve as a conclusion for this chapter.
+
+\section{Reinforcement Learning} \label{review:rl}
+\subsection{Markov Decision Processes}
+We focus on Reinforcement Learning tasks that are modelled using Markov Decision Processes (MDPs) where an MDP is 
+defined as a quadruple (4-tuple) composed of the (i) state space $S$, (ii) action space $A$, (iii) Markov kernel defined 
+by $\rho$ that takes $S\times A$ to $S$, and (iv) reward function $r$ that has real values and bounded by a minimum and 
+maximum $r$ values.
+
+\subsubsection{Policies}
+RL agent's goal is to work out a policy $\pi$ that maps $S$ to $A$, which solves a given task optimally. 
+
+\subsubsection{Value Functions}
+Extended reward function and extended Q-value functions are defined. Tasks, as well as the extended Q-value functions 
+are defined as Boolean algebra.
+
+\section{Composition} \label{review:composition}
+It is essential that we discuss the idea of $composition$ \citep{todorov2009compositionality} within the context of 
+this project as we aim to improve on the literature focused on this topic.
+
+\citet{nangue2020boolean} discusses the need for reinforcement learning (RL) agents to have an ability of knowledge 
+transfer as reinforcement learning (RL) problems become expensive. 
+
+This paper, along with \citet{todorov2009compositionality}, \citet{saxe2017hierarchy}, \citet{haarnoja2018composable}, 
+\citet{van2019composing}, \citet{hunt2019composing}, and \citet{peng2019mcp} focus on concurrent composition, where 
+novel tasks are formed by combining previously learned tasks. Another group of literature focus on sequentially chaining 
+learned policies to solve complex tasks, examples of this is options \citep{sutton1999between} and hierarchical 
+reinforcement learning \citep{barto2003recent}.
+
+This paper is the basis for this project with the focus being on how agents choose between maximizing goals and 
+discovering new goals in the environment, which is currently done in a greedy fashion.
+
+\section{Exploration-exploitation} \label{review:exp}
+The balance between exploration and exploitation is a well known problem in RL. and much of this project is focused on 
+idea. It has been researched rigorously with respect to finding the optimal policy for actions, however, there is no 
+significant work relating to the balance between exploration and exploitation for goal-oriented RL.
+
+The literature is usually classified into two types of methods. (i) $undirected$ methods, where agents resolve the 
+exploration-exploitation dilemma using Q-values, these types of methods seem to perform very well with small to medium 
+problem sizes but do not seem to find optimal policies when the problem scales significantly. (ii) $directed$ methods, 
+where agents resolve the exploration-exploitation dilemma by using knowledge about exploration, these methods deal well 
+with increased scale of problems, however, this comes with considerable computation requirements.
+
+\subsection{Epsilon Greedy}
+Epsilon greedy ($\epsilon$-greedy) is a very simple and popular method used to balance between exploration and 
+exploitation. It is an example of an $undirected$ method. It explores the environment with a probability of $\epsilon$,
+and chooses an action giving the highest reward with a probability of 1 - $\epsilon$, where $\epsilon$ is chosen to be a 
+very small number within the open interval $(0, 1)$ (Note: An $\epsilon$ of 0 means exploitation only and an $\epsilon$ 
+of 1 means exploration only). It's origins are not clear, however, it has been used as far back as 
+\citet*{watkins1989learning} and \citet*{sutton1998introduction}. Papers like \citet*{tokic2011value} and 
+\citet*{dos2017adaptive} have extended the $\epsilon$-greedy method with an attempt to control the exploration rate 
+($\epsilon$). An issue with $\epsilon$-greedy is that, during exploration, it chooses equally among the other actions, 
+this is not good when there exists actions with negative rewards.
+
+\subsection{Upper Confidence Bounds}
+Upper Confidence Bounds (UCB) and specifically UCB1 \citep*{auer2002finite} is a stochastic method that is based on 
+optimism. In this method, data is gathered and then used to assign a weight to each arm in the multi-armed bandit 
+problem, this weight is known as the upper Confidence bound. UCB methods move focus from exploration to exploitation, 
+$\log_{}{t} / \operatorname{N}_t(a)$ is used encourage exploration of the environment as $\operatorname{N}_t(a)$ remains
+small for actions that have not been explored for a long time, a parameter $c$ is also used to control level of 
+exploration.
+
+\subsection{Thompson Sampling}
+\citet*{wyatt1998exploration} introduces Q-value sampling which is a $directed$ method also known as a $stochastic$
+method where the rewards are represented by a probability distribution. The probability distribution takes into account 
+both exploitation (expected reward) and exploration (how uncertain it is for actual reward). An agent then takes an 
+action based on this probability distribution. An issue with this method is that it requires vast amount of data to 
+build the probability distribution. \citet*{dearden1998bayesian} uses Q-value sampling along with Myopic value of 
+imperfection \citet*{howard1966information} to present a Bayesian based Q-learning method where actions also depend on 
+probability distribution. Thompson Sampling \citep*{thompson1933likelihood} is another sampling based algorithm.
+
+\section{Conclusion} \label{review:conclusion}
+This chapter serves to showcase literature in Reinforcement Learning and how they have an effect on our research project.
+These papers will help in determining an appropriate method that will balance between exploration and exploitation in 
+the Goal-oriented Q-learning algorithm for the boolean algebra tasks.
+
+
+\chapter{Research Methodology} \label{ch:researchMethodology}
+\section{Problem Statement}
+
+\section{Hypothesis}
+The project's aspiration is to extend the goal-oriented value function by integrating non greedy methods for balancing 
+exploration and exploitation with a focus on multi-armed bandit algorithms.
+
+We propose that using Thompson sampling and Upper Confidence Bounds (UCB1) decreases the number of samples required to reach 
+convergence as compared to epsilon-greedy. We also hypothesise that for the same sample size, the proposed methods have 
+a lesser regret than epsilon-greedy method.
+
+\section{Research Questions}
+The above propositions raises the following research questions:
+
+\begin{itemize}
+  \item Can we utilise Thompson sampling for the extended Q-value functions defined for Boolean algebra?
+  \item Does Thompson sampling based extended Q-value functions reach convergence? Do they require a lesser sample size 
+  compared to epsilon-greedy?
+  \item Is the regret for Thompson sampling over a range of sample sizes smaller than that of epsilon-greedy for the same
+  sample size?
+  \item Can UCB1 be used to train the extended Q-value functions defined for Boolean algebra?
+  \item Does training reach convergence when using UCB1 and does it reach it with a lesser sample size than epsilon-greedy?
+  \item Does UCB1 yield lesser regret compared to epsilon-greedy given that the sample size remains the same?
+  \item Which of the proposed algorithms better work with goal-oriented value functions?
+\end{itemize}
+
+\section{Methodology}
+\subsection{Research Design}
+
+\subsection{Methods}
+
+\subsection{Limitations}
+
+\chapter{Research Plan} \label{ch:plan}
+
+\chapter{Conclusion} \label{ch:conclusion}
+
+\nocite{*}
+
+\bibliography{references}
+
+
+\end{document}
