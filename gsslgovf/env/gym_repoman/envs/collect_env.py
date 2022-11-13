@@ -1,13 +1,12 @@
 import collections
 import os
+import sys
 import random
-
-import gym
 import numpy as np
+
 import pygame
+import gym
 from gym.spaces import Box, Discrete
-from pygame.compat import geterror
-from pygame.locals import QUIT
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 assets_dir = os.path.join(main_dir, 'assets')
@@ -19,7 +18,7 @@ def _load_image(name):
         image = pygame.image.load(fullname)
     except pygame.error:
         print('Cannot load image:', fullname)
-        raise SystemExit(str(geterror()))
+        raise SystemExit(str(sys.exc_info()[1]))
     image = image.convert_alpha()
     return image
 
@@ -147,8 +146,8 @@ class CollectEnv(gym.Env):
         self.start_positions = start_positions
         self.goal_condition = goal_condition
         self.action_space = Discrete(4)
-        self.rmin = -0.1
-        self.rmax = 2
+        self.min_reward = -0.1
+        self.max_reward = 2
 
         self.available_collectibles = available_collectibles \
             if available_collectibles is not None else self._AVAILABLE_COLLECTIBLES
@@ -259,9 +258,9 @@ class CollectEnv(gym.Env):
         self.collected.add(collected)
         self.render_group.remove(collected)
          
-        done, reward = False, self.rmin        
+        done, reward = False, self.min_reward        
         if self.goal:
-            done, reward = True, self.rmax
+            done, reward = True, self.max_reward
             return self._draw_screen(self._surface), reward, done, {'collected': self.collected}
         
         if len(collected) > 0:#self.action_space.n-1:

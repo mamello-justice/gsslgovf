@@ -1,7 +1,7 @@
 from setuptools import setup
 
 
-deps = ['hydra']
+deps = ['hydra-core', 'gym', 'pygame', 'matplotlib']
 
 
 setup(

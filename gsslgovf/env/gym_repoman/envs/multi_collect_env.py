@@ -1,6 +1,6 @@
 import pygame
 
-from gym_repoman.envs.collect_env import CollectEnv
+from .collect_env import CollectEnv
 
 
 class MultiCollectEnv(CollectEnv):
