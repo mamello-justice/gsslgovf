@@ -1,0 +1,12 @@
+defaults:
+  - _self_
+  - base
+
+start_positions:
+  crate_beige: [3, 4]
+  player: [6, 3]
+  circle_purple: [7, 7]
+  circle_beige: [1, 7]
+  crate_blue: [1, 1]
+  crate_purple: [8, 1]
+  circle_blue: [1, 8]

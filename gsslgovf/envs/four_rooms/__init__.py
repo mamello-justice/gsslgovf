@@ -2,5 +2,5 @@ from gym.envs.registration import register
 
 register(
     id='FourRooms-v0',
-    entry_point='four_rooms.envs:CollectEnv',
+    entry_point='gsslgovf.envs.four_rooms.envs.four_rooms:FourRooms',
 )

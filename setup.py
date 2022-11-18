@@ -1,8 +1,13 @@
 from setuptools import setup
 
 
-deps = ['hydra-core', 'gym', 'pygame', 'matplotlib']
+deps = ['hydra-core', 'gym', 'pygame', 'matplotlib', 'torch', 'torchsummary']
 
+dev_deps = ['autopep8']
+
+extras_deps = {
+    'dev': dev_deps
+}
 
 setup(
     name="gsslgovf",
@@ -12,5 +17,6 @@ setup(
     author="Mamello Seboholi",
     author_email="1851317@wits.students.ac.za",
     packages=['gsslgovf'],
-    install_requires=deps
+    install_requires=deps,
+    extras_require=extras_deps
 )

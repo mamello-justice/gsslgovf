@@ -1,330 +1,193 @@
 from ast import literal_eval
+from collections import defaultdict
+from enum import Enum
+
 import gym
-from gym import spaces
+from gym.spaces import Discrete
 from gym.utils import seeding
 
 import numpy as np
+import matplotlib.animation as anim
 import matplotlib.pyplot as plt
-import matplotlib.cm     as cm
-import matplotlib.colors as colors
-from collections import defaultdict
+import matplotlib.image as image
 
-# Defining actions
-UP = 0
-RIGHT = 1
-DOWN = 2
-LEFT = 3
-STAY = 4
+from ..utils.path import AGENT_PATH
 
-# Define colors
-COLOURS = {0: [1, 1, 1], 1: [0.0, 0.0, 0.0], 3: [0, 0.5, 0], 10: [0, 0, 1], 20:[1, 1, 0.0], 21:[0.8, 0.8, 0.8]}
+
+class Action(Enum):
+    UP = 0
+    RIGHT = 1
+    DOWN = 2
+    LEFT = 3
+    STAY = 4
+
+
+COLOURS = {
+    0: [1, 1, 1],
+    1: [0.0, 0.0, 0.0],
+    3: [0, 0.5, 0],
+    10: [0, 0, 1],
+    20: [1, 1, 0.0],
+    21: [0.8, 0.8, 0.8],
+}
+
 
 class FourRooms(gym.Env):
-    metadata = {'render.modes': ['human']}
-    MAP = "1 1 1 1 1 1 1 1 1 1 1 1 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 0 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 1 0 1 1 1 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 1 1 1 0 1 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 0 0 0 0 0 0 1\n" \
-          "1 0 0 0 0 0 1 0 0 0 0 0 1\n" \
-          "1 1 1 1 1 1 1 1 1 1 1 1 1"
+    metadata = {"render_modes": ["human"], "render_fps": 1}
 
-    def __init__(self, MAP=MAP, dense_rewards = False, goal_reward=2, step_reward=-0.1, goals=None, T_states=None, start_position=None, slip_prob=0):
+    MAP = (
+        "1 1 1 1 1 1 1 1 1 1 1 1 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 0 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 1 0 1 1 1 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 1 1 1 0 1 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 0 0 0 0 0 0 1\n"
+        "1 0 0 0 0 0 1 0 0 0 0 0 1\n"
+        "1 1 1 1 1 1 1 1 1 1 1 1 1"
+    )
 
-        self.n = None
-        self.m = None
+    _ACTIONS = {
+        Action.UP: np.array([-1, 0]),
+        Action.RIGHT: np.array([0, 1]),
+        Action.DOWN: np.array([1, 0]),
+        Action.LEFT: np.array([0, -1]),
+        Action.STAY: np.array([0, 0]),
+    }
 
-        self.grid = None
-        self.hallwayStates = None
-        self.possiblePositions = []
-        self.walls = []
-        
+    def __init__(
+        self,
+        MAP=MAP,
+        dense_rewards=False,
+        goal_reward=2,
+        step_reward=-0.1,
+        goals=None,
+        terminal_positions=None,
+        start_position=None,
+        slip_prob=0,
+        **kwargs
+    ):
         self.MAP = MAP
-        self._map_init()
-        self.diameter = (self.n+self.m)-4
+        self._init_env()
 
-        self.done = False
-        
+        self.diameter = np.sum(self.grid.shape) - 4
+
         self.slip_prob = slip_prob
-        
+
         self.start_position = start_position
-        self.position = self.start_position if start_position else (1, 1)
-        self.state = [None, self.position]
-        
-        if goals:
-            self.goals = goals
+
+        self.position = (
+            self.start_position if self.start_position else self.possible_positions[0]
+        )
+
+        self.goals = goals
+
+        if terminal_positions is not None:
+            self.terminal_positions = terminal_positions
         else:
-            self.goals = [(11, 11), (11, 11)]
-            
-        if T_states:
-            self.T_states = T_states
-        else:
-            self.T_states = self.goals
+            self.terminal_positions = self.goals
 
         # Rewards
         self.goal_reward = goal_reward
         self.step_reward = step_reward
         self.max_reward = 2
         self.min_reward = -0.1
-        
+
         self.dense_rewards = dense_rewards
         if self.dense_rewards:
-            self.min_reward = self.min_reward*10
+            self.min_reward = self.min_reward * 10
 
         # Gym spaces for observation and action space
-        self.observation_space = spaces.Discrete(len(self.possiblePositions))
-        self.action_space = spaces.Discrete(5)
-        
+        self.observation_space = Discrete(len(self.possible_positions))
+        self.action_space = Discrete(5)
 
-    def seed(self, seed=None):
-        self.np_random, seed = seeding.np_random(seed)
-        np.random.rand(seed)
-        return [seed]
-    
-    def pertube_action(self, action):      
-        if action != STAY:
-            a = 1-self.slip_prob
-            b = self.slip_prob/(self.action_space.n-2)
-            if action == UP:
-                probs = [a,b,b,b,0]
-            elif action == DOWN:
-                probs = [b,b,a,b,0]
-            elif action == RIGHT:
-                probs = [b,a,b,b,0]
-            elif action == LEFT:
-                probs = [b,b,b,a,0]
-            # else:
-            #     probs = [b,b,b,b,a]
-            action = np.random.choice(np.arange(len(probs)), p=probs)       
-        return action
+        # Rendering
+        self.agent_image = image.imread(AGENT_PATH)
 
-    def step(self, action):
-        assert self.action_space.contains(action)
-        
-        action = self.pertube_action(action)
-        
-        g = [None,None] # #virtual state 
-        if self.state in self.T_states:
-            return str(g), self._get_reward(self.state, action), True, None
-        elif action == STAY and ([self.position,self.position] in self.T_states) and not self.state[0]:
-            new_state = [self.position, self.position]
-        else:
-            x, y = self.state[1]
-            if action == UP:
-                x = x - 1
-            elif action == DOWN:
-                x = x + 1
-            elif action == RIGHT:
-                y = y + 1
-            elif action == LEFT:
-                y = y - 1
-            self.position = (x, y)
-            new_state = [None, self.position]
-        
-        reward = self._get_reward(self.state, action)
-        
-        if self._get_grid_value(new_state) == 1:  # new_state in walls list
-            # stay at old state if new coord is wall
-            self.position = self.state[1]
-        else:
-            self.state = new_state
-        
-        return str(self.state), reward, self.done, None
+    @property
+    def state(self):
+        return self._position_as_state(self.position)
 
-    def _get_dense_reward(self, state, action):
-        g = np.array([g[1] for g in self.goals])
-        s = np.array([state[1]]*len(g))
-        reward = 0.1*np.mean(np.exp(-0.25*np.linalg.norm(s-g, axis=1)**2))
-        return reward
+    @property
+    def current_room_number(self):
+        return self.get_room_for_state(self.state)
 
-    def _get_reward(self, state, action):      
-        reward = 0
-        if self.dense_rewards:
-            reward += self._get_dense_reward(state,action)
-
-        if state in self.goals:
-            reward += self.goal_reward
-        else:
-            reward += self.step_reward
-        
-        return reward        
-    
-    def env_R(self):
-        R = defaultdict(lambda: np.zeros(self.action_space.n))
-        for position in self.possiblePositions: 
-            state = [None,position]
+    @property
+    def environment_rewards(self):
+        R = np.zeros((self.observation_space.n, self.action_space.n))
+        for position in self.possible_positions:
+            state = self._position_as_state(position)
             for action in range(self.action_space.n):
-                R[str(state)][action] = self._get_reward(state,action)
-            state = [position,position]
-            if state in self.T_states:
+                R[state, action] = self._get_reward(state, action)
+
+            if position.tolist() in self.terminal_positions:
                 for action in range(self.action_space.n):
-                    R[str(state)][action] = self._get_reward(state,action) 
+                    R[state, action] = self._get_reward(state, action)
         return R
 
-    def reset(self):
-        self.done = False
-        if not self.start_position:
-            idx = np.random.randint(len(self.possiblePositions))
-            self.position = self.possiblePositions[idx]  # self.start_state_coord
-        else:
+    @property
+    def terminal(self):
+        return self.position.tolist() in self.terminal_positions
+
+    def reset(self, seed=None, options=None):
+        # Random number generator seed
+        super().reset(seed=seed, options=options)
+        if seed is not None:
+            np.random.rand(seed)
+
+        if self.start_position is not None:
             self.position = self.start_position
-        self.state = [None, self.position]
-        return str(self.state)
+        else:
+            index = np.random.randint(len(self.possible_positions))
+            self.position = self.possible_positions[index]
 
-    def render(self, fig=None, goal=None, mode='human', P=None, V = None, Q = None, R = None, T = None, Ta = None, title=None, grid=False, cmap='YlOrRd'):
+        # State, Info
+        return self.state, {}
 
-        img = self._gridmap_to_img(goal=goal)        
-        if not fig:
-            fig = plt.figure(1, figsize=(20, 15), dpi=60, facecolor='w', edgecolor='k')
-        
-        params = {'font.size': 40}
-        plt.rcParams.update(params)
-        plt.clf()
-        plt.xticks(np.arange(0, 2*self.n, 1))
-        plt.yticks(np.arange(0, 2*self.m, 1))
-        plt.grid(grid)
-        if title:
-            plt.title(title, fontsize=20)
+    def step(self, action):
+        assert not self.terminal
+        assert self.action_space.contains(action)
 
-        plt.imshow(img, origin="upper", extent=[0, self.n, self.m, 0])
-        fig.canvas.draw()
-        
-        if Q: # For showing rewards
-            ax = fig.gca()
-            cmap_ = cm.get_cmap(cmap)
-            v_max = float("-inf")
-            v_min = float("inf")
-            for state, q in Q.items():
-                if literal_eval(state)[0] or not literal_eval(state)[1]:
-                    continue
-                for action in range(self.action_space.n):
-                    if q[action] > v_max:
-                        v_max = q[action]
-                    if q[action] < v_min:
-                        if action == self.action_space.n-1:
-                            v_min += self.step_reward 
-                        else:
-                            v_min = q[action]
-            norm = colors.Normalize(v_min,v_max)
-            for state, q in Q.items():
-                if literal_eval(state)[0] or not literal_eval(state)[1]:
-                    continue
-                y, x = literal_eval(state)[1]
-                for action in range(self.action_space.n):
-                    v = (q[action]-v_min)/(v_max-v_min)
-                    self._draw_reward(ax, x, y, action, v, cmap_)
-            m = cm.ScalarMappable(norm=norm, cmap=cmap_)
-            m.set_array(ax.get_images()[0])
-            fig.colorbar(m, ax=ax)
-                    
-        if V: # For showing optimal values
-            ax = fig.gca()
-            v = np.zeros((self.m,self.n))+float("-inf")
-            for state, val in V.items():
-                if literal_eval(state)[0] or not literal_eval(state)[1]:
-                    continue
-                y, x = literal_eval(state)[1]
-                v[y,x] = val  
-            c = plt.imshow(v, origin="upper", cmap=cmap, extent=[0, self.n, self.m, 0])
-            fig.colorbar(c, ax=ax)
-                
-        if P:  # For drawing arrows of optimal policy
-            ax = fig.gca()
-            for state, action in P.items():
-                if literal_eval(state)[0] or not literal_eval(state)[1]:
-                    continue
-                y, x = literal_eval(state)[1]
-                self._draw_action(ax, x, y, action)
-        
-        cmap = 'YlOrRd'
-        if R: # For showing rewards
-            ax = fig.gca()
-            cmap_ = cm.get_cmap(cmap)
-            norm = colors.Normalize(vmin=self.min_reward, vmax=self.max_reward)
-            for state, reward in R.items():
-                y, x = literal_eval(state)[1]
-                for action in range(self.action_space.n):
-                    if literal_eval(state)[0] and action!=4:
-                        continue
-                    r = (reward[action]-self.min_reward)/(self.max_reward-self.min_reward)
-                    r = r**0.25
-                    self._draw_reward(ax, x, y, action, r, cmap_)
-            m = cm.ScalarMappable(norm=norm, cmap=cmap_)
-            m.set_array(ax.get_images()[0])
-            fig.colorbar(m, ax=ax)
-        
-        if T:  # For showing transition probabilities of single action
-            ax = fig.gca()
-            vprob = np.zeros((self.m, self.n))+float("-inf")
-            for state, prob in T.items():
-                if literal_eval(state)[0]:
-                    continue
-                y, x = literal_eval(state)[1]
-                vprob[y,x] = prob  
-            c = plt.imshow(vprob, origin="upper", cmap=cmap, extent=[0, self.n, self.m, 0])
-            fig.colorbar(c, ax=ax)
-            
-        if Ta:  # For showing transition probabilities of all actions
-            ax = fig.gca()
-            vprob = np.zeros((self.m,self.n))+float("-inf")
-            for state, probs in Ta.items():
-                if literal_eval(state)[0]:
-                    continue
-                y, x = literal_eval(state)[1]
-                vprob[y,x] = 0
-                for action in range(self.action_space.n):
-                    if probs[action]:
-                        self._draw_action(ax, x, y, action)
-            
-        plt.pause(0.00001)  # 0.01
-        return None #fig
+        action = self.pertube_action(action)
 
-    def _map_init(self):
-        self.grid = []
-        lines = self.MAP.split('\n')
+        next_position = self._next_position(action)
+        if self._position_as_state(next_position) is not None:
+            self.position = next_position
 
-        for i, row in enumerate(lines):
-            row = row.split(' ')
-            if self.n is not None and len(row) != self.n:
-                raise ValueError(
-                    "Map's rows are not of the same dimension...")
-            self.n = len(row)
-            rowArray = []
-            for j, col in enumerate(row):
-                rowArray.append(int(col))
-                if col == "1":
-                    self.walls.append((i, j))
-                # possible states
-                else:
-                    self.possiblePositions.append((i, j))
-            self.grid.append(rowArray)
-        self.m = i + 1
+        reward = self._get_reward(self.state, action)
 
-        self._find_hallWays()
+        # State, Reward, Terminated, Truncated, Info,
+        return self.state, reward, self.terminal, False, {}
 
-    def _find_hallWays(self):
-        self.hallwayStates = []
-        for x, y in self.possiblePositions:
-            if ((self.grid[x - 1][y] == 1) and (self.grid[x + 1][y] == 1)) or \
-                    ((self.grid[x][y - 1] == 1) and (self.grid[x][y + 1] == 1)):
-                self.hallwayStates.append((x, y))
+    def pertube_action(self, action):
+        if action != Action.STAY:
+            a = 1 - self.slip_prob
+            b = self.slip_prob / (self.action_space.n - 2)
+            if action == Action.UP:
+                probs = [a, b, b, b, 0]
+            elif action == Action.DOWN:
+                probs = [b, b, a, b, 0]
+            elif action == Action.RIGHT:
+                probs = [b, a, b, b, 0]
+            elif action == Action.LEFT:
+                probs = [b, b, b, a, 0]
+            else:
+                probs = [b, b, b, b, a]
+            action = np.random.choice(np.arange(len(probs)), p=probs)
+        return action
 
-    def _get_grid_value(self, state):
-        return self.grid[state[1][0]][state[1][1]]
+    def get_room_for_position(self, position):
+        # TODO: Generalize to other maps
+        return self.get_room_for_state(self._position_as_state(position))
 
-    # specific for self.MAP
-    def _getRoomNumber(self, state=None):
-        if state == None:
-            state = self.state
-        # if state isn't at hall way point
-        xCount = self._greaterThanCounter(state[1], 0)
-        yCount = self._greaterThanCounter(state[1], 1)
+    def get_room_for_state(self, state):
+        # TODO: Generalize to other maps
+        xCount = self._greater_than_counter(state[1], 0)
+        yCount = self._greater_than_counter(state[1], 1)
         room = 0
         if yCount >= 2:
             if xCount >= 2:
@@ -339,99 +202,137 @@ class FourRooms(gym.Env):
 
         return room
 
-    def _greaterThanCounter(self, state, index):
-        count = 0
-        for h in self.hallwayStates:
-            if state[index] > h[index]:
-                count = count + 1
-        return count
+    def render(self, goal=None, title=None, grid=False):
+        self.fig = plt.figure(1, figsize=(20, 15), dpi=60, facecolor="w", edgecolor="k")
 
-    def _draw_action(self, ax, x, y, action):
-        if action == UP:
-            x += 0.5
-            y += 1
-            dx = 0
-            dy = -0.4
-        if action == DOWN:
-            x += 0.5
-            dx = 0
-            dy = 0.4
-        if action == RIGHT:
-            y += 0.5
-            dx = 0.4
-            dy = 0
-        if action == LEFT:
-            x += 1
-            y += 0.5
-            dx = -0.4
-            dy = 0
-        if action == STAY:
-            x += 0.5
-            y += 0.5
-            dx = 0
-            dy = 0
-            
-            ax.add_patch(plt.Circle((x, y), radius=0.25, fc='k'))
-            return
+        height, width = self.grid.shape
 
-        ax.add_patch(plt.arrow(x,  # x1
-                      y,  # y1
-                      dx,  # x2 - x1
-                      dy,  # y2 - y1
-                      facecolor='k',
-                      edgecolor='k',
-                      width=0.005,
-                      head_width=0.4,
-                      )
-                    )
+        params = {"font.size": 40}
+        plt.rcParams.update(params)
+        plt.clf()
+        plt.xticks(np.arange(0, 2 * height, 1))
+        plt.yticks(np.arange(0, 2 * width, 1))
+        plt.grid(grid)
+        if title:
+            plt.title(title, fontsize=20)
 
-    def _draw_reward(self, ax, x, y, action, reward, cmap):
-        x += 0.5
-        y += 0.5
-        triangle = np.zeros((3,2))
-        triangle[0] = [x,y]
-        
-        if action == UP:
-            triangle[1] = [x-0.5,y-0.5]
-            triangle[2] = [x+0.5,y-0.5]
-        if action == DOWN:
-            triangle[1] = [x-0.5,y+0.5]
-            triangle[2] = [x+0.5,y+0.5]
-        if action == RIGHT:
-            triangle[1] = [x+0.5,y-0.5]
-            triangle[2] = [x+0.5,y+0.5]
-        if action == LEFT:
-            triangle[1] = [x-0.5,y-0.5]
-            triangle[2] = [x-0.5,y+0.5]
-        if action == STAY:            
-            ax.add_patch(plt.Circle((x, y), radius=0.25, color=cmap(reward)))
-            return
-
-        ax.add_patch(plt.Polygon(triangle, color=cmap(reward)))
-
-
-    def _gridmap_to_img(self, goal=None):
-        row_size = len(self.grid)
-        col_size = len(self.grid[0])
-
-        obs_shape = [row_size, col_size, 3]
-
+        obs_shape = [width, height, 3]
         img = np.zeros(obs_shape)
 
-        gs0 = int(img.shape[0] / row_size)
-        gs1 = int(img.shape[1] / col_size)
-        for i in range(row_size):
-            for j in range(col_size):
-                for k in range(3):
-                    if (i, j) == self.position:#start_position:
-                        this_value = COLOURS[10][k]
-                    elif goal and (i, j) == literal_eval(goal)[1]:
-                        this_value = COLOURS[20][k]
-                    elif [(i, j),(i, j)] in self.goals:
-                        this_value = COLOURS[3][k]
+        gs0 = int(img.shape[0] / width)
+        gs1 = int(img.shape[1] / height)
+        for x in range(width):
+            for y in range(height):
+                for c in range(3):
+                    position = [y, x]
+                    if position == self.position.tolist():  # Agent
+                        this_value = COLOURS[10][c]
+                    elif goal is not None and position == goal:
+                        this_value = COLOURS[20][c]
+                    elif position in self.goals:
+                        this_value = COLOURS[3][c]
                     else:
-                        colour_number = int(self.grid[i][j])
-                        this_value = COLOURS[colour_number][k]
-                    img[i * gs0:(i + 1) * gs0, j * gs1:(j + 1)
-                                                       * gs1, k] = this_value
-        return img
+                        colour_number = int(self.grid[x][y])
+                        this_value = COLOURS[colour_number][c]
+                    img[
+                        x * gs0 : (x + 1) * gs0, y * gs1 : (y + 1) * gs1, c
+                    ] = this_value
+
+        plt.imshow(img, origin="upper", extent=[0, height, width, 0])
+
+        self.fig.canvas.draw()
+        
+    def run(self, step, stop_cond, goal=None, title=None, grid=False):
+        def animate(i):
+            if stop_cond():
+                return False
+            
+            step()
+            self.render(goal, title, grid)
+        
+        ani = anim.FuncAnimation(plt.gcf(), animate)
+
+    ### INITIALIZE ENVIRONMENT ###
+    def _init_env(self):
+        lines = self.MAP.split("\n")
+
+        n = len(lines)
+        assert n > 0
+
+        m = len(lines[0].split(" "))
+        assert m > 0
+
+        grid = np.zeros((n, m), dtype=int)
+
+        for i, row in enumerate(lines):
+            row = row.split(" ")
+            if len(row) != n:
+                raise ValueError("Map's rows are not of the same dimension...")
+
+            for j, col in enumerate(row):
+                grid[i, j] = int(col)
+
+        self.grid = np.array(grid)
+        self._find_walls()
+        self._find_possible_positions()
+        self._find_hallWays()
+
+    def _find_walls(self):
+        self.walls = np.transpose(np.nonzero(self.grid))
+
+    def _find_possible_positions(self):
+        self.possible_positions = np.transpose(np.where(self.grid == 0))
+
+    def _find_hallWays(self):
+        states = []
+        for y, x in self.possible_positions:
+            if ((self.grid[y, x - 1] == 1) and (self.grid[y, x + 1] == 1)) or (
+                (self.grid[y - 1, x] == 1) and (self.grid[y + 1, x] == 1)
+            ):
+                states.append([y, x])
+
+        self.hallway_states = np.array(states)
+
+    ### TRAINING ###
+    def _position_as_state(self, position):
+        for state, pos in enumerate(self.possible_positions):
+            if np.all(pos == position):
+                return state
+        return None
+
+    def _next_position(self, action):
+        y, x = self.position
+        if action == Action.UP:
+            x = x - 1
+        elif action == Action.DOWN:
+            x = x + 1
+        elif action == Action.RIGHT:
+            y = y + 1
+        elif action == Action.LEFT:
+            y = y - 1
+        return np.array([y, x])
+
+    def _get_dense_reward(self, state, action):
+        g = np.array([g[1] for g in self.goals])
+        s = np.array([state[1]] * len(g))
+        reward = 0.1 * np.mean(np.exp(-0.25 * np.linalg.norm(s - g, axis=1) ** 2))
+        return reward
+
+    def _get_reward(self, state, action):
+        reward = 0
+        if self.dense_rewards:
+            reward += self._get_dense_reward(state, action)
+
+        if self.possible_positions[state].tolist() in self.goals:
+            reward += self.goal_reward
+        else:
+            reward += self.step_reward
+
+        return reward
+
+    def _greater_than_counter(self, state, index):
+        count = 0
+        for hall in self.hallway_states:
+            if state[index] > hall[::-1][index]:
+                count = count + 1
+        return count

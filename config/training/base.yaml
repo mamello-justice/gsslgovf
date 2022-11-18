@@ -1,0 +1,2 @@
+max_episodes: 10
+max_steps: 1e4

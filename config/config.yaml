@@ -1,0 +1,5 @@
+defaults:
+  - _self_
+  - algo: simple_q
+  - env: four_rooms
+  - training: base

@@ -1,0 +1,4 @@
+name: simple_q
+alpha: 1
+epsilon: 1
+gamma: 1
